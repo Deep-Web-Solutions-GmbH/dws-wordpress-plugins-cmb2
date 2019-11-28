@@ -6,7 +6,7 @@ use Deep_Web_Solutions\Base\DWS_Functionality_Template;
 if (!defined('ABSPATH')) { exit; }
 
 /**
- * Adapter for the ACF Pro plugin.
+ * Adapter for the CMB2 plugin.
  *
  * @since   2.0.0
  * @version 2.0.0
@@ -46,13 +46,13 @@ final class CMB2_Compatibility extends DWS_Functionality_Template {
      */
     protected function load_dependencies() {
         /** @noinspection PhpIncludeInspection */
-        /** Force load ACF at this point in time ... */
+        /** Force load CMB2 at this point in time ... */
         require_once(WP_PLUGIN_DIR . '/cmb2/init.php');
 
         /** @noinspection PhpIncludeInspection */
         /** The CMB2 Adapter. */
         require_once(self::get_includes_base_path() . 'class-cmb2-settings-adapter.php');
-        CMB2\DWS_CMB2_Adapter::maybe_initialize_singleton('gm8ugh874hngf87gbcu', true, self::get_root_id());
+        CMB2\DWS_CMB2_Adapter::maybe_initialize_singleton('fbgvnh7ufv9847hnu3veo', true, self::get_root_id());
     }
 
     //endregion
