@@ -44,6 +44,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function register_settings_page($page_title, $menu_title, $capability, $menu_slug, $other = array()) {
         if (!function_exists('new_cmb2_box'))  { return false; }
+
         $args = wp_parse_args($other, array(
             'id'                        => md5($menu_slug),
             'title'                     => $page_title,
@@ -78,6 +79,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function register_settings_subpage($parent_slug, $page_title, $menu_title, $capability, $menu_slug, $other = array()) {
         if (!function_exists('new_cmb2_box')) { return false; }
+
         $args = wp_parse_args($other, array(
             'id'                        => md5($menu_slug),
             'title'                     => $page_title,
@@ -107,12 +109,14 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      * @param   array   $fields
      * @param   array   $other
      */
-    public static function register_settings_page_group($key, $title, $location, $fields = null, $other = array()) {
+    public static function register_settings_page_group($key, $title, $location, $fields = array(), $other = array()) {
         if (!class_exists('CMB2')) { return; }
-        if (isset($other['fields']) && !empty($other['fields']) && empty($fields)) {
-            $fields = $other['fields'];
+
+        if (isset($other['fields']) && !empty($other['fields'])) {
+            if(empty($fields)) { $fields = $other['fields']; }
             unset($other['fields']);
         }
+
         $args = wp_parse_args($other, array(
             'id' => $key,
             'type' => 'group',
@@ -121,6 +125,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
                 'group_title'       => $title
             )
         ));
+
         $cmb = cmb2_get_metabox(md5($location));
         $group_field_id = $cmb->add_field($args);
         if (isset($fields)) {
@@ -155,10 +160,12 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function register_generic_group($key, $title, $location, $fields, $other = array()) {
         if (!class_exists('CMB2')) { return; }
-        if (isset($other['fields']) && !empty($other['fields']) && empty($fields)) {
-            $fields = $other['fields'];
+
+        if (isset($other['fields']) && !empty($other['fields'])) {
+            if(empty($fields)) { $fields = $other['fields']; }
             unset($other['fields']);
         }
+
         $args = wp_parse_args($other, array(
             'id' => $key,
             'type' => 'group',
@@ -167,6 +174,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
                 'group_title'       => $title
             )
         ));
+
         $cmb = cmb2_get_metabox(md5($location[0][0]['value']));
         $group_field_id = $cmb->add_field($args);
         if (isset($fields)) {
@@ -201,6 +209,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function register_field_to_group($group_id, $key, $type, $parameters, $location) {
         if (!class_exists('CMB2')) { return; }
+
         $cmb = cmb2_get_metabox(md5($location));
         $cmb->add_group_field($group_id, self::formatting_settings_field($key, $type, $parameters));
     }
@@ -218,6 +227,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function register_field($key, $type, $location, $parameters, $parent_id = null) {
         if (!function_exists('add_field')) { return; }
+
         $cmb = cmb2_get_metabox(md5($location));
         $cmb->add_field(self::formatting_settings_field($key, $type, $parameters));
     }
@@ -233,6 +243,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function get_settings_field_value($field, $option_page_slug) {
         if (!class_exists('CMB2')) { return null; }
+
         $settings = get_option($option_page_slug, array());
         if (!is_array($settings)) { return null; }
         foreach ($settings as $groups) {
@@ -256,6 +267,7 @@ final class DWS_CMB2_Adapter extends DWS_Adapter_Base implements DWS_Adapter {
      */
     public static function get_field_value($field, $post_id = false) {
         if (!function_exists('get_post_meta')) { return null; }
+
         return get_post_meta($post_id, $field);
     }
 
